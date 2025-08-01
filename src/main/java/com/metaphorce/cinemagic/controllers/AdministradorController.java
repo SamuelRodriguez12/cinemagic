@@ -1,10 +1,13 @@
 package com.metaphorce.cinemagic.controllers;
 
 import com.metaphorce.cinemagic.entities.*;
+import com.metaphorce.cinemagic.exceptions.DatosNoValidosException;
 import com.metaphorce.cinemagic.repositories.PeliculaRepository;
 import com.metaphorce.cinemagic.services.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,7 +31,10 @@ public class AdministradorController {
     VentaService ventaService;
 
     @PutMapping("/administrador/pelicula/{idPelicula}/horario/{idHorario}")
-    public ResponseEntity<Horario> cambiarHorario(@PathVariable("idPelicula") Integer idPelicula, @PathVariable("idHorario") Integer idHorario, @RequestBody Horario horario){
+    public ResponseEntity<Horario> cambiarHorario(@PathVariable("idPelicula") Integer idPelicula, @PathVariable("idHorario") Integer idHorario, @Valid @RequestBody Horario horario, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new DatosNoValidosException("Error de validacion de datos", bindingResult);
+        }
         Pelicula pelicula = peliculaRepository.findById(idPelicula).orElse(null);
         Horario nuevoHorario = horarioService.updateHorario(idHorario, horario);
         if (pelicula == null || nuevoHorario == null){

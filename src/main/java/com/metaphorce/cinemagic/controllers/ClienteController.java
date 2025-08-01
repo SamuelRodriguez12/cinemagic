@@ -1,12 +1,15 @@
 package com.metaphorce.cinemagic.controllers;
 
 import com.metaphorce.cinemagic.entities.*;
+import com.metaphorce.cinemagic.exceptions.DatosNoValidosException;
 import com.metaphorce.cinemagic.repositories.BoletoRepository;
 import com.metaphorce.cinemagic.repositories.HorarioRepository;
 import com.metaphorce.cinemagic.repositories.PeliculaRepository;
 import com.metaphorce.cinemagic.services.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -51,14 +54,19 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente/comprar_boleto/pelicula/{idPelicula}/horario/{idHorario}/boleto/{idBoleto}")
-    public ResponseEntity<Venta> comprarBoleto(@PathVariable("idPelicula") Integer idPelicula, @PathVariable("idHorario") Integer idHorario, @PathVariable("idBoleto") Integer idBoleto, @RequestBody DetalleFuncion detalleFuncion){
+    public ResponseEntity<?> comprarBoleto(@PathVariable("idPelicula") Integer idPelicula, @PathVariable("idHorario") Integer idHorario, @PathVariable("idBoleto") Integer idBoleto, @Valid @RequestBody DetalleFuncion detalleFuncion, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            throw new DatosNoValidosException("Error de validacion de datos", bindingResult);
+        }
         Horario horario = horarioRepository.findById(idHorario).orElse(null);
         Boleto boleto = boletoRepository.findById(idBoleto).orElse(null);
         Pelicula pelicula = peliculaRepository.findById(idPelicula).orElse(null);
         if(horario == null || boleto == null || pelicula == null){
             return null;
         }
+        DetalleFuncion ultimaFuncion = detalleFuncionService.getDetalleFuncion().get(detalleFuncionService.getDetalleFuncion().size()-1);
         horario.setPelicula(pelicula);
+        detalleFuncion.setIdDetalleFuncion(ultimaFuncion.getIdDetalleFuncion()+1);
         detalleFuncion.setHorario(horario);
         detalleFuncion.setBoleto(boleto);
         detalleFuncionService.sendDetalleFuncion(detalleFuncion);
@@ -68,7 +76,10 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente/reseniar/pelicula/{idPelicula}")
-    public ResponseEntity<Resenia> ingresarResenia(@PathVariable("idPelicula") Integer idPelicula,@RequestBody Resenia resenia){
+    public ResponseEntity<Resenia> ingresarResenia(@PathVariable("idPelicula") Integer idPelicula,@Valid @RequestBody Resenia resenia, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new DatosNoValidosException("Error de validacion de datos", bindingResult);
+        }
         Pelicula pelicula = peliculaRepository.findById(idPelicula).orElse(null);
         if(pelicula == null){
             return null;

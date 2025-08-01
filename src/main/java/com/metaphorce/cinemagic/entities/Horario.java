@@ -1,6 +1,8 @@
 package com.metaphorce.cinemagic.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Horario")
@@ -9,10 +11,16 @@ public class Horario {
     @Column(name = "id_horario")
     private Integer idHorario;
     @Column(name = "fecha")
+    @NotBlank(message = "Debes ingresar la fecha")
+    @Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}", message = "La fecha debe tener formato DD-MM-YYYY")
     private String fecha;
     @Column(name = "hora_inicio")
+    @NotBlank(message = "Debes ingresar el horario de inicio")
+    @Pattern(regexp = "\\d{2}:\\d{2}", message = "La hora debe de tener un formato de HH:mm")
     private String horaInicio;
     @Column(name = "hora_fin")
+    @NotBlank(message = "Debes ingresar el horario de termino")
+    @Pattern(regexp = "\\d{2}:\\d{2}", message = "La hora debe de tener un formato de HH:mm")
     private String horaFin;
     @ManyToOne
     @JoinColumn(name = "id_pelicula")

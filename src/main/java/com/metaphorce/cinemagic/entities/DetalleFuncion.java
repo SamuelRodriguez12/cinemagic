@@ -1,12 +1,14 @@
 package com.metaphorce.cinemagic.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Detalle_Funcion")
 public class DetalleFuncion {
     @Id
     @Column(name = "id_detalle_funcion")
+    @NotBlank(message = "No se puede mandar el id vacio")
     private Integer idDetalleFuncion;
     @ManyToOne
     @JoinColumn(name = "id_horario")
