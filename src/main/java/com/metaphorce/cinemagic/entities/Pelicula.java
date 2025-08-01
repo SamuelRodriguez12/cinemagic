@@ -1,5 +1,6 @@
 package com.metaphorce.cinemagic.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -8,7 +9,9 @@ import jakarta.persistence.Table;
 @Table(name = "Pelicula")
 public class Pelicula {
     @Id
+    @Column(name = "id_pelicula")
     private Integer idPelicula;
+    @Column(name = "nombre_pelicula")
     private String nombrePelicula;
 
     public Pelicula() {

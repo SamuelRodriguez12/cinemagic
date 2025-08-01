@@ -1,16 +1,19 @@
 package com.metaphorce.cinemagic.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Resenia")
 public class Resenia {
     @Id
+    @Column(name = "id_resenia")
     private Integer idResenia;
+    @Column(name = "detalle_resenia")
     private String detalleResenia;
+    @Column(name = "calificacion")
     private Double calificacion;
+    @ManyToOne
+    @JoinColumn(name = "id_pelicula")
     private Pelicula pelicula;
 
     public Resenia() {

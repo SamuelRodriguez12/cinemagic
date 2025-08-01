@@ -30,7 +30,7 @@ public class HorarioServiceImp implements HorarioService{
             return null;
         }
         hor.setFecha(horario.getFecha());
-        hor.setHoraInicio(horario.getFecha());
+        hor.setHoraInicio(horario.getHoraInicio());
         hor.setHoraFin(horario.getHoraFin());
         hor.setPelicula(horario.getPelicula());
         return repository.save(hor);

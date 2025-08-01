@@ -26,8 +26,7 @@ public class VentaServiceImp implements VentaService{
         if (ven == null){
             return null;
         }
-        ven.setBoleto(venta.getBoleto());
-        ven.setHorario(venta.getHorario());
+        ven.setDetalleFuncion(venta.getDetalleFuncion());
         return repository.save(ven);
     }
 

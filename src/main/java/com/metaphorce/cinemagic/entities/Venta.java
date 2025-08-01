@@ -1,24 +1,23 @@
 package com.metaphorce.cinemagic.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Venta")
 public class Venta {
     @Id
+    @Column(name = "id_venta")
     private Integer idVenta;
-    private Horario horario;
-    private Boleto boleto;
+    @OneToOne
+    @JoinColumn(name = "id_detalle_funcion")
+    private DetalleFuncion detalleFuncion;
 
     public Venta() {
     }
 
-    public Venta(Integer idVenta, Horario horario, Boleto boleto) {
+    public Venta(Integer idVenta, DetalleFuncion detalleFuncion) {
         this.idVenta = idVenta;
-        this.horario = horario;
-        this.boleto = boleto;
+        this.detalleFuncion = detalleFuncion;
     }
 
     public Integer getIdVenta() {
@@ -29,19 +28,11 @@ public class Venta {
         this.idVenta = idVenta;
     }
 
-    public Horario getHorario() {
-        return horario;
+    public DetalleFuncion getDetalleFuncion() {
+        return detalleFuncion;
     }
 
-    public void setHorario(Horario horario) {
-        this.horario = horario;
-    }
-
-    public Boleto getBoleto() {
-        return boleto;
-    }
-
-    public void setBoleto(Boleto boleto) {
-        this.boleto = boleto;
+    public void setDetalleFuncion(DetalleFuncion detalleFuncion) {
+        this.detalleFuncion = detalleFuncion;
     }
 }

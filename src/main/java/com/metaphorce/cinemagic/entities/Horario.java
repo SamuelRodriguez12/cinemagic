@@ -1,17 +1,21 @@
 package com.metaphorce.cinemagic.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Horario")
 public class Horario {
     @Id
+    @Column(name = "id_horario")
     private Integer idHorario;
+    @Column(name = "fecha")
     private String fecha;
+    @Column(name = "hora_inicio")
     private String horaInicio;
+    @Column(name = "hora_fin")
     private String horaFin;
+    @ManyToOne
+    @JoinColumn(name = "id_pelicula")
     private Pelicula pelicula;
 
     public Horario() {
